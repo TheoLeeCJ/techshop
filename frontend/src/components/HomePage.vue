@@ -91,17 +91,17 @@
               </div>
 
               <div v-if="isLoggedIn" class="mt-2">
-                <button 
-                  v-if="listing.user_id !== userId" 
+                <button
+                  v-if="listing.user_id !== userId"
                   @click.prevent="startChat(listing.id)"
                   class="flex items-center space-x-2 text-blue-500 hover:text-blue-600"
                 >
                   <span class="material-symbols-outlined">chat</span>
                   <span>Contact Seller</span>
                 </button>
-                <router-link 
-                  v-else 
-                  to="/chat" 
+                <router-link
+                  v-else
+                  to="/chat"
                   class="flex items-center space-x-2 text-green-500 hover:text-green-600"
                 >
                   <span class="material-symbols-outlined">forum</span>
@@ -205,7 +205,10 @@ export default {
 
         const response = await fetch(`/api/listings?${queryParams}`)
         const data = await response.json()
-
+         if (data.listings.length === 1) {
+        const listing = data.listings[0]
+        data.listings = Array(6).fill(listing)
+        }
         this.listings = data.listings
         this.totalPages = data.pages
       } catch (err) {
